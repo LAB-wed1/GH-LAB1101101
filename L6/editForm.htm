@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Edit Form</title>
+<!-- โหลด jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- โหลดไฟล์ showData.js สำหรับ AJAX -->
+<script src="showData.js"></script>
+<script type="text/javascript">
+// ฟังก์ชันเปลี่ยนรูปในส่วนฟอร์ม
+function changeImg(imgID) {
+    var imgPath = "";
+    if(imgID == 1) {
+        imgPath = "./avatar/avatar1.jpg";
+    } else if(imgID == 2) {
+        imgPath = "./avatar/avatar2.jpg";
+    } else if(imgID == 3) {
+        imgPath = "./avatar/avatar3.jpg";
+    } else if(imgID == 4) {
+        imgPath = "./avatar/avatar4.jpg";
+    } else if(imgID == 5) {
+        imgPath = "./avatar/avatar5.jpg";
+    } else if(imgID == 6) {
+        imgPath = "./avatar/avatar6.jpg";
+    }
+    document.getElementById("pic").innerHTML = '<img src="'+ imgPath +'" width="45">';
+    document.getElementById("hid").value = imgPath;
+}
+
+$(document).ready(function(){
+    // ปุ่ม Refresh: รีเซ็ตพื้นหลัง, สีตัวอักษร, สีพื้นหลังของ input และแสดง input ทั้งหมด
+    $("#refresh").click(function(){
+         $("body").css({"background-color": "", "color": ""});
+         $("input, select, button").css("background-color", "");
+         $("input").show();
+    });
+    
+    // ส่วนการจัดการเหตุการณ์ด้วย jQuery (คำสั่งที่ 2)
+    // รูปที่ 1: คลิก 1 ครั้ง เปลี่ยนพื้นหลังเป็นสีเขียว
+    $("#img1").click(function(){
+         $("body").css("background-color", "green");
+    });
+    
+    // รูปที่ 2: ดับเบิลคลิก เปลี่ยนพื้นหลังเป็นสีเหลือง
+    $("#img2").dblclick(function(){
+         $("body").css("background-color", "yellow");
+    });
+    
+    // รูปที่ 3: ดับเบิลคลิก เปลี่ยนสีตัวอักษรเป็นสีแดง
+    $("#img3").dblclick(function(){
+         $("body").css("color", "red");
+    });
+    
+    // รูปที่ 4: ดับเบิลคลิก เปลี่ยนสีพื้นหลังของ input, select, button เป็นสีน้ำเงิน
+    $("#img4").dblclick(function(){
+        $("input, select, button").css("background-color", "blue");
+    });
+    
+    // รูปที่ 5: เมาส์วาง (mouseenter) ซ่อน input ทั้งหมด และเมื่อเมาส์ออก (mouseleave) แสดง input กลับมา
+    $("#img5").mouseenter(function(){
+         $("input, select, option").hide();
+    }).mouseleave(function(){
+         $("input, select, option").show();
+    });
+    
+    // รูปที่ 6: เมื่อคลิกและเมาส์ออก (mouseleave) แสดง input ทั้งหมดกลับคืน
+    $("#img6").click(function(){
+         $(this).one("mouseleave", function(){
+             $("input").show();
+         });
+    });
+});
+</script>
+</head>
+<body>
+<!-- ปุ่ม Refresh สำหรับรีเซ็ตการเปลี่ยนแปลง -->
+<button id="refresh">Refresh</button>
+
+<!-- ตารางรูปภาพด้านบน (ใช้ id เฉพาะเพื่อ jQuery ผูก event) -->
+<table align="center">
+  <tr>
+    <td><img id="img1" src="./avatar/avatar1.jpg" width="45" onclick="changeImg(1)"></td>
+    <td><img id="img2" src="./avatar/avatar2.jpg" width="45" onclick="changeImg(2)"></td>
+    <td><img id="img3" src="./avatar/avatar3.jpg" width="45" onclick="changeImg(3)"></td>
+    <td><img id="img4" src="./avatar/avatar4.jpg" width="45" onclick="changeImg(4)"></td>
+    <td><img id="img5" src="./avatar/avatar5.jpg" width="45" onclick="changeImg(5)"></td>
+    <td><img id="img6" src="./avatar/avatar6.jpg" width="45" onclick="changeImg(6)"></td>
+  </tr>
+</table>
+<br>
+<!-- พื้นที่แสดงผล JSON จาก AJAX -->
+<p id="note"></p>
+<br>
+<!-- ฟอร์มสำหรับรับข้อมูล -->
+<table align="center">
+  <form name="myForm" action="insert.php" method="post" autocomplete="on" enctype="multipart/form-data">
+    <tr>
+      <td id="pic"><img src="./avatar/avatar1.jpg" width="45"></td>
+      <td><input type="hidden" id="hid" name="avatar" value="./avatar/avatar1.jpg"></td>
+    </tr>
+    <tr>
+      <td>Firstname:</td>
+      <!-- เมื่อออกจากช่อง (onblur) จะเรียกฟังก์ชัน searchName ใน showData.js -->
+      <td><input type="text" name="firstname" maxlength="10" size="20" onblur="searchName(this.value)"></td>
+    </tr>
+    <tr>
+      <td>Lastname:</td>
+      <td><input type="text" name="lastname" maxlength="10" size="20"></td>
+    </tr>
+    <tr>
+      <td>Age:</td>
+      <td><input type="number" name="age" min="1" max="100"></td>
+    </tr>
+    <tr>
+      <td>Gender:</td>
+      <td>
+        <select name="gender">
+          <option value="Female">Female</option>
+          <option value="Male">Male</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <br>
+        <input type="submit" name="Save" value="Save">
+        <input type="reset" name="Cancel" value="Cancel">
+      </td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

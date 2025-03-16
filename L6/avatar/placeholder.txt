@@ -1,0 +1,8 @@
+This folder contains avatar images for the registration system.
+The following files should be placed here:
+- avatar1.jpg
+- avatar2.jpg
+- avatar3.jpg
+- avatar4.jpg
+- avatar5.jpg
+- avatar6.jpg
